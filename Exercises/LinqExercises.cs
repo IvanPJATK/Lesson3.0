@@ -167,7 +167,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task11_JoinStudentsWithEnrollments()
     {
-        throw NotImplemented(nameof(Task11_JoinStudentsWithEnrollments));
+        return UniversityData.Students.Join(UniversityData.Enrollments, st => st.Id, e => e.StudentId, (st, e) => $"{st.FirstName} {st.LastName} - {e.EnrollmentDate}").ToList();
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task12_StudentCoursePairs()
     {
-        throw NotImplemented(nameof(Task12_StudentCoursePairs));
+        return UniversityData.Students.Join(UniversityData.Enrollments, st => st.Id, e => e.StudentId).Join(UniversityData.Courses, e.CourseId =);
     }
 
     /// <summary>
