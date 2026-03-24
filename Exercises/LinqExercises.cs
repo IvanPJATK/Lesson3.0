@@ -61,7 +61,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task04_FirstAnalyticsCourse()
     {
-        return [UniversityData.Courses.Where(c => c.Category == "Analytics").Select(e => $"{e.Title}").FirstOrDefault() ?? "No Analytics corse found"]
+        return [UniversityData.Courses.Where(c => c.Category == "Analytics").Select(e => $"{e.Title}").FirstOrDefault() ?? "No Analytics corse found"];
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task05_IsThereAnyInactiveEnrollment()
     {
-        throw NotImplemented(nameof(Task05_IsThereAnyInactiveEnrollment));
+        return [UniversityData.Enrollments.Exists(e => e.IsActive) ? "Yes" : "No"];
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task06_DoAllLecturersHaveDepartment()
     {
-        throw NotImplemented(nameof(Task06_DoAllLecturersHaveDepartment));
+        return [UniversityData.Lecturers.Count(l => string.IsNullOrEmpty(l.Department)) == UniversityData.Lecturers.Count() ? "Yes" : "No"];
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task07_CountActiveEnrollments()
     {
-        throw NotImplemented(nameof(Task07_CountActiveEnrollments));
+        return [UniversityData.Enrollments.Count(e => e.IsActive).ToString()];
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task08_DistinctStudentCities()
     {
-        throw NotImplemented(nameof(Task08_DistinctStudentCities));
+        return UniversityData.Students.OrderBy(s => s.City).Select(s => s.City).Distinct().ToList();
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task09_ThreeNewestEnrollments()
     {
-        throw NotImplemented(nameof(Task09_ThreeNewestEnrollments));
+        return UniversityData.Enrollments.OrderByDescending(e => e.EnrollmentDate).Select(e => $"{e.EnrollmentDate} {e.StudentId} {e.CourseId}").Take(3).ToList();
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task10_SecondPageOfCourses()
     {
-        throw NotImplemented(nameof(Task10_SecondPageOfCourses));
+        return UniversityData.Courses.OrderBy(c => c.Title).Select(c => $"{c.Title} {c.Category}").Skip(2).Take(2).ToList();
     }
 
     /// <summary>
