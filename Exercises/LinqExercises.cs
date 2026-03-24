@@ -1,4 +1,5 @@
 using LinqConsoleLab.EN.Data;
+using System.Linq;
 
 namespace LinqConsoleLab.EN.Exercises;
 
@@ -16,7 +17,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task01_StudentsFromWarsaw()
     {
-        throw NotImplemented(nameof(Task01_StudentsFromWarsaw));
+        return UniversityData.Students.Where(s => s.City == "Warsaw").Select(e => $"{e.IndexNumber} {e.FirstName} {e.LastName} {e.City}").ToList();
     }
 
     /// <summary>
@@ -30,7 +31,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task02_StudentEmailAddresses()
     {
-        throw NotImplemented(nameof(Task02_StudentEmailAddresses));
+        return UniversityData.Students.Select(s => s.Email).ToList();
     }
 
     /// <summary>
@@ -45,7 +46,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task03_StudentsSortedAlphabetically()
     {
-        throw NotImplemented(nameof(Task03_StudentsSortedAlphabetically));
+        return UniversityData.Students.OrderBy(s => s.LastName).OrderBy(s => s.FirstName).Select(e => $"{e.IndexNumber} {e.FirstName} {e.LastName}").ToList();
     }
 
     /// <summary>
@@ -60,7 +61,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task04_FirstAnalyticsCourse()
     {
-        throw NotImplemented(nameof(Task04_FirstAnalyticsCourse));
+        return [UniversityData.Courses.Where(c => c.Category == "Analytics").Select(e => $"{e.Title}").FirstOrDefault() ?? "No Analytics corse found"]
     }
 
     /// <summary>
