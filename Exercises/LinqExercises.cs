@@ -1,4 +1,5 @@
 using LinqConsoleLab.EN.Data;
+using LinqConsoleLab.EN.Models;
 using System.Linq;
 
 namespace LinqConsoleLab.EN.Exercises;
@@ -183,7 +184,9 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task12_StudentCoursePairs()
     {
-        return UniversityData.Students.Join(UniversityData.Enrollments, st => st.Id, e => e.StudentId).Join(UniversityData.Courses, e.CourseId =);
+        return UniversityData.Students
+            .Join(UniversityData.Enrollments, Student => Student.Id, Enrollment => Enrollment.StudentId, (Student, Enrollment) => new {Student, Enrollment})
+            .Join(UniversityData.Courses, Combined => Combined.Enrollment.CourseId, Course => Course.Id, (Combined, Course) => $"{Combined.Student.FirstName} {Combined.Student.LastName} {Course.Title}").ToList();
     }
 
     /// <summary>
