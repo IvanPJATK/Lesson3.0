@@ -201,7 +201,7 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task13_GroupEnrollmentsByCourse()
     {
-        throw NotImplemented(nameof(Task13_GroupEnrollmentsByCourse));
+        return UniversityData.Enrollments.Join(UniversityData.Courses, e => e.CourseId, c => c.Id, (e,c) => new {e,c}).GroupBy(combined => combined.c.Title).Select(group => $"{group.Key} {group.Count()}").ToList();
     }
 
     /// <summary>
