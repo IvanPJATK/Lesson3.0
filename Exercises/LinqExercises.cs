@@ -1,6 +1,7 @@
 ﻿using LinqConsoleLab.EN.Data;
 using LinqConsoleLab.EN.Models;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace LinqConsoleLab.EN.Exercises;
 
@@ -281,7 +282,9 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Challenge01_StudentsWithMoreThanOneActiveCourse()
     {
-        throw NotImplemented(nameof(Challenge01_StudentsWithMoreThanOneActiveCourse));
+        return UniversityData.Students
+            .GroupJoin(UniversityData.Enrollments, s => s.Id, e => e.StudentId, (s, e) => new { Name = $"{s.FirstName} {s.LastName}", Count = e.Count() })
+            .Where(combined => combined.Count > 1).Select(combined => $"{combined.Name} active enrollments: {combined.Count}").ToList();
     }
 
     /// <summary>
@@ -298,7 +301,9 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Challenge02_AprilCoursesWithoutFinalGrades()
     {
-        throw NotImplemented(nameof(Challenge02_AprilCoursesWithoutFinalGrades));
+        return UniversityData.Courses.Where(c => c.StartDate.Month == 4 && c.StartDate.Year == 2026)
+            .GroupJoin(UniversityData.Enrollments, c => c.Id, e => e.CourseId, (course, enrollments) => new { course, enrollments })
+            .Where(combined => !combined.enrollments.Any(e => e.FinalGrade.HasValue)).Select(combined => combined.course.Title).ToList();
     }
 
     /// <summary>
