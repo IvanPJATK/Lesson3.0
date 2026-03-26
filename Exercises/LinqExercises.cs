@@ -1,4 +1,4 @@
-using LinqConsoleLab.EN.Data;
+﻿using LinqConsoleLab.EN.Data;
 using LinqConsoleLab.EN.Models;
 using System.Linq;
 
@@ -201,7 +201,10 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task13_GroupEnrollmentsByCourse()
     {
-        return UniversityData.Enrollments.Join(UniversityData.Courses, e => e.CourseId, c => c.Id, (e,c) => new {e,c}).GroupBy(combined => combined.c.Title).Select(group => $"{group.Key} {group.Count()}").ToList();
+        return UniversityData.Enrollments
+            .Join(UniversityData.Courses, e => e.CourseId, c => c.Id, (e,c) => new {e,c})
+            .GroupBy(combined => combined.c.Title)
+            .Select(group => $"{group.Key} {group.Count()}").ToList();
     }
 
     /// <summary>
@@ -218,7 +221,10 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task14_AverageGradePerCourse()
     {
-        throw NotImplemented(nameof(Task14_AverageGradePerCourse));
+        return UniversityData.Enrollments.Where(e => e.FinalGrade.HasValue)
+            .Join(UniversityData.Courses, e => e.CourseId, с => с.Id, (e,c) => new {c,e})
+            .GroupBy(combined => combined.c.Title)
+            .Select(group => $"{group.Key}: {group.Average(g => g.e.FinalGrade)}").ToList();
     }
 
     /// <summary>
@@ -234,7 +240,9 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task15_LecturersAndCourseCounts()
     {
-        throw NotImplemented(nameof(Task15_LecturersAndCourseCounts));
+        return UniversityData.Lecturers
+            .GroupJoin(UniversityData.Courses, l => l.Id, c => c.LecturerId, (l, c) => new { Name = $"{l.FirstName} {l.LastName}", Count = c.Count() })
+            .Select(result => $"{result.Name}: {result.Count}").ToList();
     }
 
     /// <summary>
@@ -251,7 +259,11 @@ public sealed class LinqExercises
     /// </summary>
     public IEnumerable<string> Task16_HighestGradePerStudent()
     {
-        throw NotImplemented(nameof(Task16_HighestGradePerStudent));
+        return UniversityData.Students
+            .Join(UniversityData.Enrollments, s => s.Id, e => e.StudentId, (s, e) => new { s, e })
+            .Where(combined => combined.e.FinalGrade.HasValue)
+            .GroupBy(combined => new { combined.s.FirstName, combined.s.LastName })
+            .Select(g => $"{g.Key.FirstName} {g.Key.LastName}: {g.Max(x => x.e.FinalGrade)}").ToList();
     }
 
     /// <summary>
